@@ -32,6 +32,15 @@ class AddMemoryRequest(BaseModel):
     rating: str  # "loved", "okay", "avoid"
     tags: List[str]  # e.g., ["too bitter", "sweet", "bloating", "great taste"]
 
+@app.get("/")
+def root_welcome():
+    return {
+        "service": "Blinkit AI Shopping Coach Backend API",
+        "status": "online",
+        "health_check": "/api/health",
+        "docs": "/docs"
+    }
+
 @app.get("/api/health")
 def health_check():
     return {
