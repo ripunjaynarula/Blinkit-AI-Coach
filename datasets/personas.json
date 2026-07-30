@@ -1,0 +1,50 @@
+[
+  {
+    "id": "risk_averse_beginner",
+    "name": "Risk-Averse Beginner",
+    "description": "First-time buyer looking for maximum safety, gentle formulas, and high forgiveness without risking money.",
+    "key_traits": ["Safety conscious", "Prefers simple prep", "Avoids high-risk purchases"],
+    "target_categories": ["Coffee", "Protein", "Skincare"],
+    "preferred_tags": ["Beginner Choice", "Gentle", "Instant Prep", "Forgiving"]
+  },
+  {
+    "id": "budget_optimizer",
+    "name": "Budget Optimizer",
+    "description": "Seeks maximum value per rupee and cost efficiency across unfamiliar categories.",
+    "key_traits": ["Price sensitive", "Calculates cost-per-gram", "Values high protein/gram ratio"],
+    "target_categories": ["Coffee", "Protein", "Skincare"],
+    "preferred_tags": ["Value Pick", "Budget Pick", "Maximum Value"]
+  },
+  {
+    "id": "curious_explorer",
+    "name": "Curious Explorer",
+    "description": "Eager to try premium single-origin roasts, specialty formulations, and novel active ingredients.",
+    "key_traits": ["Aroma focused", "Values artisanal processing", "Exploratory mindset"],
+    "target_categories": ["Coffee", "Skincare"],
+    "preferred_tags": ["100% Arabica", "Specialty Coffee", "Freeze Dried", "Single Estate"]
+  },
+  {
+    "id": "health_first",
+    "name": "Health First",
+    "description": "Prioritizes zero added sugar, clean plant/natural ingredients, and stomach-friendly digestion.",
+    "key_traits": ["Clean label priority", "Digestive comfort priority", "Zero added sugar"],
+    "target_categories": ["Coffee", "Protein", "Skincare"],
+    "preferred_tags": ["DigeZyme", "No Bloating", "Clean Ingredients", "Zero Sugar"]
+  },
+  {
+    "id": "routine_shopper",
+    "name": "Routine Shopper",
+    "description": "Values convenience, instant preparation, reliable daily performance, and fast 10-minute delivery.",
+    "key_traits": ["Time poor", "Seeks fast daily routine", "High brand trust"],
+    "target_categories": ["Coffee", "Protein", "Skincare"],
+    "preferred_tags": ["Instant Prep", "Daily Staple", "Trusted Brand"]
+  },
+  {
+    "id": "premium_seeker",
+    "name": "Premium Seeker",
+    "description": "Invests in dermatologist-grade skincare, hydrolyzed whey isolates, and imported freeze-dried coffees.",
+    "key_traits": ["Quality obsessed", "Values clinical proof", "High brand willingness"],
+    "target_categories": ["Coffee", "Protein", "Skincare"],
+    "preferred_tags": ["Hydrolyzed Isolate", "Gold Standard", "Dermatologist Developed"]
+  }
+]

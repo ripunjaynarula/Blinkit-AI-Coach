@@ -1,0 +1,12 @@
+{
+  "name": "blinkit-ai-shopping-coach",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "python -m uvicorn backend.main:app --port 8000 --reload",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start"
+  }
+}
