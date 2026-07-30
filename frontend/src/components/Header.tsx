@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="truncate">Delivery in <b>10 minutes</b></span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <span className="hidden sm:inline font-semibold opacity-95">Blinkit AI Coach • <span className="text-blinkit-yellow">Buy with Confidence</span></span>
+          <span className="hidden sm:inline font-semibold opacity-95">Blinkit Decision Assistant • <span className="text-blinkit-yellow">Buy with Confidence</span></span>
           <button 
             onClick={onOpenMemory}
             className="flex items-center gap-1 bg-white/20 hover:bg-white/30 px-2 py-0.5 rounded text-[11px] font-medium transition-colors"

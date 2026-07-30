@@ -77,7 +77,7 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-1.5 text-xs font-bold text-blinkit-yellow">
                 <ShieldCheck className="w-4 h-4 fill-blinkit-yellow text-gray-900" />
-                <span>BLINKIT AI COACH</span>
+                <span>BLINKIT DECISION ASSISTANT</span>
               </div>
               <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-semibold text-white">Buy with Confidence</span>
             </div>

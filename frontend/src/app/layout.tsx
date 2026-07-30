@@ -2,9 +2,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blinkit AI Shopping Coach - Buy with Confidence',
+  title: 'Blinkit Decision Assistant - Buy with Confidence',
   description: 'AI-native shopping assistant that answers "Is this the right product for me?" for Coffee, Protein Powder, and Skincare categories on Blinkit.',
-  keywords: 'Blinkit, AI Shopping Coach, Buy with Confidence, Quick Commerce, E-commerce AI, Coffee, Protein, Skincare',
+  keywords: 'Blinkit, Blinkit Decision Assistant, Buy with Confidence, Quick Commerce, E-commerce AI, Coffee, Protein, Skincare',
 };
 
 export default function RootLayout({

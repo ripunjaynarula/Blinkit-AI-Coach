@@ -1,4 +1,4 @@
-# Blinkit AI Coach — Buy with Confidence 🚀
+# Blinkit Decision Assistant — Buy with Confidence 🚀
 
 > **AI-Native Customer Experience MVP** designed to eliminate buying hesitation when Monthly Active Customers explore unfamiliar categories on Blinkit.
 
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-- **Feature Identity**: **Blinkit AI Coach**
+- **Feature Identity**: **Blinkit Decision Assistant**
 - **User-Facing Promise**: **Buy with Confidence** (*Powered by Blinkit AI*)
 - **Target Categories**: Coffee, Protein Powder, Skincare (54 products total, 18 per category)
 - **Primary Business KPI**: Percentage of Monthly Active Customers purchasing from at least one new category every month.

@@ -122,7 +122,7 @@ export default function Home() {
           <div className="max-w-2xl space-y-3 relative z-10">
             <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blinkit-yellow">
               <ShieldCheck className="w-4 h-4 fill-blinkit-yellow text-gray-900" />
-              <span>BLINKIT AI COACH</span>
+              <span>BLINKIT DECISION ASSISTANT</span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
@@ -178,7 +178,7 @@ export default function Home() {
       <BottomSheet
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
-        title="Blinkit AI Coach"
+        title="Blinkit Decision Assistant"
         subtitle="Buy with Confidence • Powered by Multi-Agent Architecture"
       >
         {selectedProduct && (
