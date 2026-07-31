@@ -74,12 +74,14 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
               <ShieldCheck className="w-24 h-24 text-white" />
             </div>
 
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-blinkit-yellow">
-                <ShieldCheck className="w-4 h-4 fill-blinkit-yellow text-gray-900" />
-                <span>BLINKIT DECISION ASSISTANT</span>
+            <div className="flex items-center justify-between gap-2 mb-1.5">
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-blinkit-yellow min-w-0 truncate">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-blinkit-yellow text-gray-900 shrink-0" />
+                <span className="truncate">BLINKIT DECISION ASSISTANT</span>
               </div>
-              <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-semibold text-white">Buy with Confidence</span>
+              <span className="text-[10px] bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-semibold text-white whitespace-nowrap shrink-0 border border-white/20">
+                Buy with Confidence
+              </span>
             </div>
 
             <div className="text-xl font-extrabold tracking-tight mb-1 text-white flex items-center gap-2">
