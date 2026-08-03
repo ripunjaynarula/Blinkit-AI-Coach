@@ -1,61 +1,103 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShoppingCart, ArrowRight, Check, X, ShieldCheck } from 'lucide-react';
-import { CartItem } from '../lib/store';
+import { ShoppingCart, ArrowRight, Check, X, ShieldCheck, ThumbsUp, Minus, ThumbsDown, Sparkles } from 'lucide-react';
+import { CartItem, MemoryItem } from '../lib/store';
 
 interface StickyCartProps {
   cart: CartItem[];
   onUpdateQuantity: (productId: string, delta: number) => void;
   onClearCart: () => void;
+  isOpen: boolean;
+  onOpenCart: () => void;
+  onCloseCart: () => void;
+  onSaveMemory: (mem: Omit<MemoryItem, 'id' | 'date'>) => void;
 }
 
 export const StickyCart: React.FC<StickyCartProps> = ({
   cart,
   onUpdateQuantity,
-  onClearCart
+  onClearCart,
+  isOpen,
+  onOpenCart,
+  onCloseCart,
+  onSaveMemory
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isOrdered, setIsOrdered] = useState(false);
+  const [orderedItems, setOrderedItems] = useState<CartItem[]>([]);
+  const [selectedRating, setSelectedRating] = useState<'loved' | 'okay' | 'avoid'>('loved');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isMemorySaved, setIsMemorySaved] = useState(false);
 
   const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
 
-  if (totalCount === 0) return null;
+  const availableTags = [
+    'Great taste', 'Easy prep', 'Too bitter', 'Stomach bloating',
+    'Skin reaction', 'Value for money', 'Gentle formula', 'High absorption'
+  ];
 
   const handleCheckout = () => {
+    setOrderedItems([...cart]);
     setIsOrdered(true);
+    setIsMemorySaved(false);
+    setSelectedTags([]);
+  };
+
+  const handleSaveOrderMemory = () => {
+    if (orderedItems.length > 0) {
+      orderedItems.forEach((item) => {
+        onSaveMemory({
+          product_id: item.product.id,
+          product_name: item.product.name,
+          rating: selectedRating,
+          tags: selectedTags.length > 0 ? selectedTags : ['Verified Purchase']
+        });
+      });
+    }
+    setIsMemorySaved(true);
     setTimeout(() => {
       onClearCart();
       setIsOrdered(false);
-      setIsOpen(false);
-    }, 3000);
+      setIsMemorySaved(false);
+      onCloseCart();
+    }, 1800);
+  };
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
   };
 
   return (
     <>
-      {/* Sticky Bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-xl px-4">
-        <div className="bg-blinkit-green text-white rounded-2xl shadow-2xl p-3 flex items-center justify-between gap-4 border border-blinkit-green-dark">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-extrabold text-white text-base">
-              {totalCount}
+      {/* Sticky Bottom Bar (Visible when cart has items) */}
+      {totalCount > 0 && !isOpen && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-xl px-4">
+          <div className="bg-blinkit-green text-white rounded-2xl shadow-2xl p-3 flex items-center justify-between gap-4 border border-blinkit-green-dark">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-extrabold text-white text-base">
+                {totalCount}
+              </div>
+              <div>
+                <span className="text-xs text-white/80 block leading-tight">{totalCount} item{totalCount > 1 ? 's' : ''} added</span>
+                <span className="text-base font-black text-white leading-tight">₹{totalPrice}</span>
+              </div>
             </div>
-            <div>
-              <span className="text-xs text-white/80 block leading-tight">{totalCount} item{totalCount > 1 ? 's' : ''} added</span>
-              <span className="text-base font-black text-white leading-tight">₹{totalPrice}</span>
-            </div>
-          </div>
 
-          <button
-            onClick={() => setIsOpen(true)}
-            className="bg-white text-blinkit-green hover:bg-blinkit-yellow hover:text-gray-900 px-5 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-1.5 transition-all shadow-md active:scale-95"
-          >
-            <span>View Cart</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+            <button
+              onClick={onOpenCart}
+              className="bg-white text-blinkit-green hover:bg-blinkit-yellow hover:text-gray-900 px-5 py-2.5 rounded-xl font-extrabold text-sm flex items-center gap-1.5 transition-all shadow-md active:scale-95"
+            >
+              <span>View Cart</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Cart Modal / Drawer */}
       {isOpen && (
@@ -67,26 +109,134 @@ export const StickyCart: React.FC<StickyCartProps> = ({
                 <ShoppingCart className="w-5 h-5 text-blinkit-green" />
                 <h3 className="font-extrabold text-gray-900 text-base">My Cart ({totalCount})</h3>
               </div>
-              <button onClick={() => setIsOpen(false)} className="p-1 rounded-full text-gray-400 hover:bg-gray-100">
+              <button onClick={onCloseCart} className="p-1 rounded-full text-gray-400 hover:bg-gray-100">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
+            {/* Content: 1. Order Confirmation & Post-Purchase AI Memory Rating */}
             {isOrdered ? (
-              <div className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 bg-blinkit-green-light text-blinkit-green rounded-full flex items-center justify-center mx-auto">
-                  <Check className="w-10 h-10 stroke-[3]" />
+              <div className="p-6 text-center space-y-4 overflow-y-auto">
+                <div className="w-14 h-14 bg-blinkit-green-light text-blinkit-green rounded-full flex items-center justify-center mx-auto">
+                  <Check className="w-8 h-8 stroke-[3]" />
                 </div>
-                <h3 className="text-xl font-black text-gray-900">Order Placed!</h3>
-                <p className="text-xs text-gray-500">Delivering to Home - Indiranagar in <strong>10 minutes</strong>.</p>
-                <div className="inline-flex items-center gap-1.5 bg-blinkit-yellow-light border border-blinkit-yellow px-3 py-1.5 rounded-xl text-xs font-bold text-gray-900">
-                  <ShieldCheck className="w-4 h-4 text-blinkit-green" />
-                  <span>Bought with Confidence</span>
+
+                <div>
+                  <h3 className="text-xl font-black text-gray-900">Order Placed!</h3>
+                  <p className="text-xs text-gray-500">Delivering in <strong>10 minutes</strong>.</p>
+                </div>
+
+                {/* Automated Post-Purchase AI Memory Card */}
+                <div className="bg-emerald-50/60 rounded-2xl border border-emerald-100 p-4 text-left space-y-3">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 border-b border-emerald-100 pb-2">
+                    <Sparkles className="w-4 h-4 text-blinkit-green" />
+                    <span>Train Your AI Memory (Auto Feedback)</span>
+                  </div>
+
+                  <p className="text-[11px] text-emerald-950 font-medium">
+                    Rate this purchase to update your AI Coach memory so future product recommendations adapt to your preferences!
+                  </p>
+
+                  {/* Rating Selector */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      onClick={() => setSelectedRating('loved')}
+                      className={`p-2 rounded-xl text-xs font-bold flex flex-col items-center gap-1 border transition-all ${
+                        selectedRating === 'loved'
+                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-500'
+                      }`}
+                    >
+                      <ThumbsUp className="w-4 h-4" />
+                      <span>Loved it</span>
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedRating('okay')}
+                      className={`p-2 rounded-xl text-xs font-bold flex flex-col items-center gap-1 border transition-all ${
+                        selectedRating === 'okay'
+                          ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-amber-500'
+                      }`}
+                    >
+                      <Minus className="w-4 h-4" />
+                      <span>It was okay</span>
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedRating('avoid')}
+                      className={`p-2 rounded-xl text-xs font-bold flex flex-col items-center gap-1 border transition-all ${
+                        selectedRating === 'avoid'
+                          ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-rose-500'
+                      }`}
+                    >
+                      <ThumbsDown className="w-4 h-4" />
+                      <span>Avoid</span>
+                    </button>
+                  </div>
+
+                  {/* Tag Selector */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {availableTags.map((tag) => {
+                      const isSelected = selectedTags.includes(tag);
+                      return (
+                        <button
+                          key={tag}
+                          onClick={() => toggleTag(tag)}
+                          className={`text-[10px] px-2 py-0.5 rounded-lg font-medium border transition-colors ${
+                            isSelected
+                              ? 'bg-blinkit-green text-white border-blinkit-green'
+                              : 'bg-white text-gray-600 border-gray-200'
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    onClick={handleSaveOrderMemory}
+                    disabled={isMemorySaved}
+                    className="w-full bg-blinkit-green hover:bg-blinkit-green-dark text-white font-extrabold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    {isMemorySaved ? (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>AI MEMORY UPDATED!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>SAVE TO AI MEMORY & FINISH</span>
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
+            ) : totalCount === 0 ? (
+              /* Content: 2. Empty Cart View */
+              <div className="p-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400">
+                  <ShoppingCart className="w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-gray-900 text-base">Your cart is empty</h4>
+                  <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
+                    Browse Coffee, Protein Powder, or Skincare and add products backed by Blinkit AI Decision Assistant.
+                  </p>
+                </div>
+                <button
+                  onClick={onCloseCart}
+                  className="bg-blinkit-green hover:bg-blinkit-green-dark text-white font-extrabold px-6 py-2.5 rounded-xl text-xs transition-all shadow-sm"
+                >
+                  Start Shopping
+                </button>
+              </div>
             ) : (
+              /* Content: 3. Cart Items List */
               <>
-                {/* Items */}
                 <div className="p-4 overflow-y-auto space-y-3 flex-1 no-scrollbar">
                   {cart.map((item) => (
                     <div key={item.product.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-100">

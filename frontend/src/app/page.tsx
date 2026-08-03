@@ -26,6 +26,7 @@ export default function Home() {
   // AI Memory state
   const [userMemories, setUserMemories] = useState<MemoryItem[]>(getInitialMemory());
   const [isMemoryModalOpen, setIsMemoryModalOpen] = useState<boolean>(false);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   // Fetch products
   useEffect(() => {
@@ -108,7 +109,7 @@ export default function Home() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         cartCount={cartCount}
-        onOpenCart={() => {}}
+        onOpenCart={() => setIsCartOpen(true)}
         onOpenMemory={() => setIsMemoryModalOpen(true)}
         memoryCount={userMemories.length}
         activeCategory={activeCategory}
@@ -263,6 +264,10 @@ export default function Home() {
         cart={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={() => setCart([])}
+        isOpen={isCartOpen}
+        onOpenCart={() => setIsCartOpen(true)}
+        onCloseCart={() => setIsCartOpen(false)}
+        onSaveMemory={handleSaveMemory}
       />
     </div>
   );
