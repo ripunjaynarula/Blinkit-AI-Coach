@@ -140,11 +140,11 @@ export async function evaluateProductWithAI(
         }
       ],
       why_you_are_seeing_this: [
-        `✓ Your explicit preference (${onboardingAnswer})`,
-        `✓ Verified ${prod.brand} ingredient & specification profile`,
-        `✓ Choices of 1,400+ similar first-time buyers`,
-        `✓ Verified customer review sentiment analysis`,
-        `✓ Category domain guide rules (${prod.category.toLowerCase()}.md)`
+        `✓ Derived from verified customer reviews`,
+        `✓ Derived from product specifications (${prod.brand} ${prod.name})`,
+        `✓ Derived from category domain knowledge base (${prod.category.toLowerCase()}.md)`,
+        `✓ Derived from similar product comparisons (${rival.brand})`,
+        `✓ Tailored to selected decision context (${onboardingAnswer})`
       ],
       derived_specifications: {
         flavor_intensity: prod.category === 'Coffee' ? 'Smooth & Medium' : 'N/A',

@@ -218,11 +218,11 @@ Respond STRICTLY with valid JSON containing keys:
 
         # 6. Dynamic Transparent Evidence Checklist
         seeing_checklist = [
-            f"✓ Your explicit preference ({priority})",
-            f"✓ Specification analysis of {p_name} (₹{price})",
-            f"✓ Behavioral cohort: {persona_match.get('persona_name', 'Similar Buyers')} ({persona_match.get('cohort_satisfaction_rate', '94%')} satisfaction)",
-            f"✓ Analysis of {review_intel.get('total_reviews_analyzed', 14)} verified customer reviews",
-            f"✓ Category domain guide rules ({cat.lower()}.md)"
+            f"✓ Derived from verified customer reviews ({review_intel.get('total_reviews_analyzed', 14)} reviews analyzed)",
+            f"✓ Derived from product specifications ({p_brand} {p_name})",
+            f"✓ Derived from category domain knowledge base ({cat.lower()}.md)",
+            f"✓ Derived from similar product comparisons ({len(alternatives)} category rivals evaluated)",
+            f"✓ Tailored to selected decision context ({priority})"
         ]
 
         return {

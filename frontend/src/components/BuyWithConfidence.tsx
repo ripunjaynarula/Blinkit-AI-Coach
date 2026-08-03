@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, Heart, AlertCircle, ShoppingBag, Sparkles, Check } from 'lucide-react';
+import { ShieldCheck, Heart, AlertCircle, ShoppingBag, Sparkles, Check, ShieldAlert } from 'lucide-react';
 import { Product, EvaluateResponse } from '@/lib/api';
 import { ContextualGuidanceBar } from './ContextualGuidanceBar';
 import { ComparativeCard } from './ComparativeCard';
 import { ExplainableCard } from './ExplainableCard';
 import { AIMemoryWidget } from './AIMemoryWidget';
+import { AskAIWidget } from './AskAIWidget';
 import { MemoryItem } from '@/lib/store';
 
 interface BuyWithConfidenceProps {
@@ -32,6 +33,21 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
   onAddToCart,
   isInCart
 }) => {
+  const getBadgeStyle = (tier: string) => {
+    switch (tier) {
+      case 'Excellent Match':
+        return 'bg-gradient-to-r from-blinkit-green to-emerald-800 text-white';
+      case 'Good Match':
+        return 'bg-gradient-to-r from-emerald-600 to-teal-800 text-white';
+      case 'Worth Considering':
+        return 'bg-gradient-to-r from-amber-600 to-amber-800 text-white';
+      case 'Not Recommended':
+        return 'bg-gradient-to-r from-rose-700 to-red-900 text-white';
+      default:
+        return 'bg-gradient-to-r from-blinkit-green to-emerald-800 text-white';
+    }
+  };
+
   return (
     <div className="space-y-5 pb-6">
       {/* Product Summary Header */}
@@ -51,7 +67,7 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
         </div>
       </div>
 
-      {/* Contextual Onboarding Bar */}
+      {/* Decision Context Pills */}
       <ContextualGuidanceBar
         category={product.category}
         activePreference={activePreference}
@@ -68,8 +84,10 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
         </div>
       ) : aiData ? (
         <>
-          {/* Qualitative Match Tier Header Badge */}
-          <div className="bg-gradient-to-r from-blinkit-green to-emerald-800 text-white rounded-2xl p-4 shadow-md relative overflow-hidden">
+          {/* ================================================================= */}
+          {/* 1. RECOMMENDATION (Badge Header) */}
+          {/* ================================================================= */}
+          <div className={`rounded-2xl p-4 shadow-md relative overflow-hidden ${getBadgeStyle(aiData.match_badge.tier)}`}>
             <div className="absolute right-3 top-3 opacity-10">
               <ShieldCheck className="w-24 h-24 text-white" />
             </div>
@@ -85,6 +103,9 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
             </div>
 
             <div className="text-xl font-extrabold tracking-tight mb-1 text-white flex items-center gap-2">
+              {aiData.match_badge.tier === 'Not Recommended' && (
+                <ShieldAlert className="w-6 h-6 text-amber-300 shrink-0" />
+              )}
               <span>{aiData.match_badge.tier}</span>
             </div>
 
@@ -93,24 +114,33 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
             </p>
           </div>
 
-          {/* Why this fits you */}
+          {/* ================================================================= */}
+          {/* 2. WHY THIS RECOMMENDATION */}
+          {/* ================================================================= */}
           <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm space-y-2">
             <div className="flex items-center gap-2 text-sm font-bold text-gray-900 border-b border-gray-100 pb-2">
               <Sparkles className="w-4 h-4 text-blinkit-green" />
-              <span>Why this fits you</span>
+              <span>Why this recommendation</span>
             </div>
             <p className="text-xs text-gray-700 leading-relaxed font-medium">
               {aiData.why_this_fits_you}
             </p>
           </div>
 
-          {/* What Customers Love & Things to Know */}
+          {/* ================================================================= */}
+          {/* 3. SUPPORTING EVIDENCE */}
+          {/* ================================================================= */}
+          <ExplainableCard checklist={aiData.why_you_are_seeing_this} />
+
+          {/* ================================================================= */}
+          {/* 4. THINGS TO KNOW (Trade-offs & Customer Praise) */}
+          {/* ================================================================= */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Love */}
+            {/* Customer Praise */}
             <div className="bg-emerald-50/50 rounded-2xl border border-emerald-100 p-4 space-y-2">
               <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 border-b border-emerald-100 pb-2">
                 <Heart className="w-4 h-4 text-emerald-600 fill-emerald-600" />
-                <span>What customers love</span>
+                <span>Customer praise signals</span>
               </div>
               <ul className="space-y-1.5">
                 {aiData.what_customers_love.map((bullet, idx) => (
@@ -126,7 +156,7 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
             <div className="bg-amber-50/50 rounded-2xl border border-amber-100 p-4 space-y-2">
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 border-b border-amber-100 pb-2">
                 <AlertCircle className="w-4 h-4 text-amber-600" />
-                <span>Things to know before buying</span>
+                <span>Things to know & trade-offs</span>
               </div>
               <ul className="space-y-1.5">
                 {aiData.things_to_know.map((bullet, idx) => (
@@ -139,14 +169,19 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
             </div>
           </div>
 
-          {/* Comparative Card */}
+          {/* ================================================================= */}
+          {/* 5. RECOMMENDED ALTERNATIVE (Only when appropriate or negative path) */}
+          {/* ================================================================= */}
           <ComparativeCard
             currentBrand={product.brand}
             comparisons={aiData.why_over_similar_options}
+            matchTier={aiData.match_badge.tier}
           />
 
-          {/* Explainable AI Checklist */}
-          <ExplainableCard checklist={aiData.why_you_are_seeing_this} />
+          {/* ================================================================= */}
+          {/* 6. ASK AI (Optional Follow-Up Questions) */}
+          {/* ================================================================= */}
+          <AskAIWidget product={product} category={product.category} />
 
           {/* AI Memory Widget */}
           <AIMemoryWidget
