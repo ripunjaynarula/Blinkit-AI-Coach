@@ -192,15 +192,15 @@ export const BuyWithConfidence: React.FC<BuyWithConfidenceProps> = ({
           />
 
           {/* Sticky Bottom Action */}
-          <div className="sticky bottom-0 pt-4 bg-white border-t border-gray-100 flex items-center justify-between gap-3">
+          <div className="sticky -bottom-6 -mx-6 px-6 pt-3 pb-6 bg-white border-t border-gray-100 flex items-center justify-between gap-3 z-30 shadow-[0_-6px_20px_rgba(0,0,0,0.06)]">
             <div>
-              <span className="text-xs text-gray-400 block">Total Price</span>
-              <span className="text-lg font-black text-gray-900">₹{product.price}</span>
+              <span className="text-[11px] text-gray-400 block -mb-0.5 font-medium">Total Price</span>
+              <span className="text-base sm:text-lg font-black text-gray-900">₹{product.price}</span>
             </div>
 
             <button
               onClick={() => onAddToCart(product)}
-              className={`flex-1 py-3 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
+              className={`flex-1 py-3 px-5 sm:px-6 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
                 isInCart
                   ? 'bg-emerald-700 text-white shadow-emerald-700/20'
                   : 'bg-blinkit-green hover:bg-blinkit-green-dark text-white shadow-blinkit-green/20'
