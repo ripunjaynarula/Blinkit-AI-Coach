@@ -7,6 +7,7 @@ import { ProductGrid } from '@/components/ProductGrid';
 import { BottomSheet } from '@/components/BottomSheet';
 import { BuyWithConfidence } from '@/components/BuyWithConfidence';
 import { StickyCart } from '@/components/StickyCart';
+import { ServerWakeupModal } from '@/components/ServerWakeupModal';
 import { fetchProducts, evaluateProductWithAI, Product, EvaluateResponse } from '@/lib/api';
 import { CartItem, MemoryItem, getInitialMemory } from '@/lib/store';
 import { ShieldCheck, Sparkles, Coffee, Dumbbell, X, ThumbsUp, ThumbsDown } from 'lucide-react';
@@ -104,6 +105,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col pb-24">
+      {/* Render Free Tier Server Wakeup Modal */}
+      <ServerWakeupModal />
+
       {/* Top Header with Integrated Category Bar */}
       <Header
         searchQuery={searchQuery}
